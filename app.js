@@ -5,6 +5,7 @@ const latEl = document.getElementById('lat');
 const lonEl = document.getElementById('lon');
 
 let intervalId = null;
+let gpsPoints = [];
 
 const updateDisplay = (lat, lon) => {
   latEl.textContent = lat != null ? lat.toFixed(6) : '-';
@@ -24,6 +25,11 @@ const fetchLocation = () => {
   navigator.geolocation.getCurrentPosition(
     (pos) => {
       const { latitude, longitude } = pos.coords;
+      gpsPoints.push({
+        lat: latitude,
+        lon: longitude,
+        timestamp: Date.now(),
+      });
       updateDisplay(latitude, longitude);
       setStatus('取得中');
     },
@@ -39,6 +45,7 @@ const startRecording = () => {
     return;
   }
 
+  gpsPoints = [];
   setStatus('位置情報の許可をリクエストしています...');
   fetchLocation();
   intervalId = setInterval(fetchLocation, 30_000);
@@ -50,7 +57,8 @@ const stopRecording = () => {
   }
   clearInterval(intervalId);
   intervalId = null;
-  setStatus('停止中');
+  console.log('Recorded points:', gpsPoints);
+  setStatus(`停止中 (${gpsPoints.length}件記録)`);
 };
 
 startBtn.addEventListener('click', startRecording);
