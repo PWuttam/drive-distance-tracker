@@ -17,6 +17,13 @@ const setStatus = (text) => {
   statusEl.textContent = text;
 };
 
+const setRecordingState = (isRecording) => {
+  startBtn.disabled = isRecording;
+  stopBtn.disabled = !isRecording;
+  statusEl.classList.toggle('recording', isRecording);
+  statusEl.classList.toggle('idle', !isRecording);
+};
+
 const toRadians = (degrees) => (degrees * Math.PI) / 180;
 
 const haversineDistanceKm = (p1, p2) => {
@@ -73,6 +80,7 @@ const startRecording = () => {
   gpsPoints = [];
   totalDistanceKm = 0;
   setStatus('位置情報の許可をリクエストしています...');
+  setRecordingState(true);
   fetchLocation();
   intervalId = setInterval(fetchLocation, 30_000);
 };
@@ -85,7 +93,10 @@ const stopRecording = () => {
   intervalId = null;
   console.log('Recorded points:', gpsPoints);
   setStatus(`停止中 (${gpsPoints.length}件記録 / ${totalDistanceKm.toFixed(2)} km)`);
+  setRecordingState(false);
 };
 
 startBtn.addEventListener('click', startRecording);
 stopBtn.addEventListener('click', stopRecording);
+
+setRecordingState(false);

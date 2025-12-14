@@ -4,12 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Drive Distance Tracker</title>
+  <style>
+    #status.recording { color: #0f7b3b; }
+    #status.idle { color: #666; }
+  </style>
   <script src="app.js" defer></script>
 </head>
 <body>
   <h1>GPSテスト</h1>
   <button id="start-btn">記録開始</button>
-  <button id="stop-btn">記録終了</button>
+  <button id="stop-btn" disabled>記録終了</button>
 
   <p id="status">待機中</p>
   <p>緯度: <span id="lat">-</span></p>
