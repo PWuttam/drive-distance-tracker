@@ -1,42 +1,62 @@
-# Drive Distance Tracker
+# 🚗 Drive Distance Tracker
 
-業務で車を使用する際の走行距離を、  
-スマートフォンのGPS情報を使って自動で計測・記録するためのプロジェクトです。
+Drive Distance Tracker is a project designed to automatically measure and record driving distance during work-related car usage by utilizing GPS data from a smartphone.
+
+---
 
 ## Background
 
-現在は以下のような手作業で走行距離を管理しています。
+Currently, driving distance is managed manually using the following workflow:
 
-- 車のメーターを撮影
-- 朝と夜の差分を手計算
-- Excelに手入力
+- Taking photos of the car’s odometer
+- Manually calculating the difference between morning and evening readings
+- Entering the results into an Excel sheet
 
-この方法は手間がかかり、記録忘れや計算ミスが起きやすいため、  
-GPSを使って自動で走行距離を計測できる仕組みを作ることを目的としています。
+This process is time-consuming and prone to missed records and calculation errors.  
+The goal of this project is to build a system that automatically measures driving distance using GPS data, reducing manual work and human error.
+
+---
 
 ## Scope (v0.1 Prototype)
 
-v0.1では、最小限の動作確認を目的とし、以下を実装します。
+Version v0.1 focuses on minimal functionality to validate the core concept.
 
-- スマホのブラウザで動作するWebアプリ
-- 「記録開始」「記録終了」ボタン
-- 記録中に一定間隔でGPS位置情報を取得
-- 取得した位置情報から走行距離を計算
-- 記録終了時に、その日の合計走行距離（km）を画面に表示
+The following features are included:
+
+- A web application that runs in a smartphone browser
+- “Start Recording” and “Stop Recording” buttons
+- Periodic acquisition of GPS location data while recording
+- Distance calculation based on recorded GPS coordinates
+- Display of the total driving distance (in kilometers) on the screen when recording ends
+
+---
 
 ## Out of Scope (v0.1)
 
-以下は v0.1 では実装しません。
+The following features are intentionally excluded from v0.1:
 
-- Excelへの書き込み
-- 月の左右15日レイアウト対応
-- 自動開始・自動終了
-- 高精度な距離補正
+- Writing data to Excel files
+- Support for left/right 15-day monthly layouts
+- Automatic start / stop of recording
+- Advanced distance accuracy correction
+
+---
 
 ## Goal
 
-- 実際に車で走行し、
-- 「記録開始」→「記録終了」を行い、
-- 当日の走行距離が画面に表示されること
+The success criteria for v0.1 are defined as follows:
 
-これを v0.1 の成功条件とします。
+- Drive an actual vehicle while recording is active
+- Execute the workflow: “Start Recording” → “Stop Recording”
+- Confirm that the total driving distance for the day is displayed on the screen
+
+If this workflow operates as expected, v0.1 is considered successful.
+
+> Note: At the current stage, full validation using a real vehicle on a smartphone device has not yet been completed.  
+> The core logic and UI flow have been verified in a PC browser environment.
+
+---
+
+## Status
+
+This project is currently in **v0.1 (prototype stage)** and focuses on validating core GPS-based distance tracking logic.
