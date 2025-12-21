@@ -7,6 +7,10 @@ const lonEl = document.getElementById('lon');
 let intervalId = null;
 let gpsPoints = [];
 let totalDistanceKm = 0;
+let lastCountedPoint = null;
+
+const MIN_DISTANCE_M = 7; // ignore sub-7m jitter
+const MIN_SPEED_MPS = 0.5; // require ~1.8 km/h if speed is provided
 
 const updateDisplay = (lat, lon) => {
   latEl.textContent = lat != null ? lat.toFixed(6) : '-';
@@ -49,18 +53,28 @@ const fetchLocation = () => {
 
   navigator.geolocation.getCurrentPosition(
     (pos) => {
-      const { latitude, longitude } = pos.coords;
-      const previousPoint = gpsPoints[gpsPoints.length - 1];
-      gpsPoints.push({
+      const { latitude, longitude, speed } = pos.coords;
+      const currentPoint = {
         lat: latitude,
         lon: longitude,
         timestamp: Date.now(),
-      });
-      if (previousPoint) {
-        totalDistanceKm += haversineDistanceKm(previousPoint, {
-          lat: latitude,
-          lon: longitude,
-        });
+      };
+      gpsPoints.push(currentPoint);
+
+      if (lastCountedPoint) {
+        const distanceKm = haversineDistanceKm(lastCountedPoint, currentPoint);
+        const distanceM = distanceKm * 1000;
+        const speedProvided = speed != null;
+        const passesSpeedCheck = !speedProvided || speed >= MIN_SPEED_MPS;
+        const passesDistanceCheck = distanceM >= MIN_DISTANCE_M;
+
+        if (passesSpeedCheck && passesDistanceCheck) {
+          totalDistanceKm += distanceKm;
+          lastCountedPoint = currentPoint;
+        }
+      } else {
+        // First point establishes the baseline for future distance calculations.
+        lastCountedPoint = currentPoint;
       }
       updateDisplay(latitude, longitude);
       setStatus(`取得中 (${gpsPoints.length}件 / ${totalDistanceKm.toFixed(2)} km)`);
@@ -79,6 +93,7 @@ const startRecording = () => {
 
   gpsPoints = [];
   totalDistanceKm = 0;
+  lastCountedPoint = null;
   setStatus('位置情報の許可をリクエストしています...');
   setRecordingState(true);
   fetchLocation();
